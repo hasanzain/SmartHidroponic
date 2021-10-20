@@ -104,7 +104,7 @@ distance= duration*0.034/2;
 //    Blynk.virtualWrite(V5, adc);
 }
 
-void phmeter()
+float phMeter()
 {
     static unsigned long timepoint = millis();
   if (millis() - timepoint > 1000U) //time interval: 1s
@@ -117,7 +117,8 @@ void phmeter()
 //    Serial.print("pH:");
 //    Serial.println(phValue, 4);
 //    kirim data ke blynk
-//    Blynk.virtualWrite(V5, adc);
+//    
+    return phValue;
   }
   ph.calibration(voltage, temperature); // calibration process by Serail CMD
 }
@@ -159,7 +160,14 @@ delay(500);
 
 void Task1code( void * parameter ){
   for(;;){
-
+    float dataPh = phMeter();
+//  if(dataPh <= 6){
+//  Urutan penerimaan data relay(relay1;relay2;...relay6)
+//  Serial2.print(1;-;-;-;-;-)
+//  Relay1 nyala
+//    }
+    Blynk.virtualWrite(V5, dataPh);
+    delay(1000);
   } 
 }
 
@@ -186,9 +194,10 @@ void Task2code( void * parameter ){
 //    Serial.println(dataTx[1]);
 
 //    kirim data ultrasonic ke blynk
-//      Blynk.virtualWrite(V0,dataTx[0]);
-//      Blynk.virtualWrite(V1,dataTx[0]);
+      Blynk.virtualWrite(V0,dataTx[0]);
+//      Blynk.virtualWrite(V1,dataTx[1]);
   }
+  delay(1000);
   }
 }
 
